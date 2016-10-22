@@ -25,6 +25,11 @@ body {
     left: 2rem;
 }
 
+.container {
+    margin: 0 auto;
+    max-width: 64rem;
+}
+
 @media (min-width: 640px) {
     html {font-size: 112%;}
     
@@ -44,4 +49,14 @@ body {
 
 @media (min-width: 1024px) {
     html {font-size: 120%;}
+}
+
+.clearfix::before,
+.clearfix::after {
+    content: " ";
+    display: table;
+}
+
+.clearfix::after {
+    clear: both;
 }

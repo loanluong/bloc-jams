@@ -28,6 +28,21 @@ var albumMarconi = {
      ]
  };
 
+var albumHudson = {
+    title: 'Dog Days',
+    artist: 'Hudson Phan',
+    label: 'Pets',
+    year: '2008',
+    albumArtUrl: 'assets/images/album_covers/10.png',
+    songs: [
+        {title: 'Woof, Woof', duration: '0:45' },
+        {title: 'Fetch', duration: '5:29' },
+        {title: 'Squirrel!', duration: '3:02' },
+        {title: 'Sunbathing', duration: '4:17' },
+        {title: 'Night Watch', duration: '4:56' },
+    ]
+}; 
+
 var createSongRow = function(songNumber, songName, songLength) {
      var template =
         '<tr class="album-view-song-item">'
@@ -40,12 +55,12 @@ var createSongRow = function(songNumber, songName, songLength) {
      return template;
  };
 
+var albumTitle = document.getElementsByClassName('album-view-title')[0];
+var albumArtist = document.getElementsByClassName('album-view-artist')[0];
+var albumReleaseInfo = document.getElementsByClassName('album-view-release-info')[0];
+var albumImage = document.getElementsByClassName('album-cover-art')[0];
+var albumSongList = document.getElementsByClassName('album-view-song-list')[0];
 var setCurrentAlbum = function(album) {
-    var albumTitle = document.getElementsByClassName('album-view-title')[0];
-    var albumArtist = document.getElementsByClassName('album-view-artist')[0];
-    var albumReleaseInfo = document.getElementsByClassName('album-view-release-info')[0];
-    var albumImage = document.getElementsByClassName('album-cover-art')[0];
-    var albumSongList = document.getElementsByClassName('album-view-song-list')[0];
     albumTitle.firstChild.nodeValue = album.title;
     albumArtist.firstChild.nodeValue = album.artist;
     albumReleaseInfo.firstChild.nodeValue = album.year + ' ' + album.label;
@@ -53,9 +68,21 @@ var setCurrentAlbum = function(album) {
     albumSongList.innerHTML = '';
     for (var i = 0; i < album.songs.length; i++) {
         albumSongList.innerHTML += createSongRow(i + 1, album.songs[i].title, album.songs[i].duration);
-    }
+   }    
 };
 
 window.onload = function() {
     setCurrentAlbum(albumPicasso);
+    albumImage.addEventListener("click", nextAlbum);
+    var albumList = [albumHudson, albumMarconi, albumPicasso];
+    var next = 0;
+    function nextAlbum(Event) {
+        setCurrentAlbum(albumList[next]);
+        next++;
+        if (next >= albumList.length) {
+            next = 0;
+        }
+            
+    }
 };
+        

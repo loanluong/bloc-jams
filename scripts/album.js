@@ -3,7 +3,7 @@ var createSongRow = function(songNumber, songName, songLength) {
         '<tr class="album-view-song-item">'
       + '  <td class="song-item-number" data-song-number="' + songNumber + '">' + songNumber + '</td>'
       + '  <td class="song-item-title">' + songName + '</td>'
-      + '  <td class="song-item-duration">' + songLength + '</td>'
+      + '  <td class="song-item-duration">' + filterTimeCode(songLength) + '</td>'
       + '</tr>'
       ;
     
@@ -82,15 +82,32 @@ var setCurrentAlbum = function(album) {
 };
 
  var updateSeekBarWhileSongPlays = function() {
+     
      if (currentSoundFile) {
          currentSoundFile.bind('timeupdate', function(event) {
 
             var seekBarFillRatio = this.getTime() / this.getDuration();
             var $seekBar = $('.seek-control .seek-bar');
- 
-            updateSeekPercentage($seekBar, seekBarFillRatio);
-        });
+            var currentTime = currentSoundFile.getTime();
+            
+            setCurrentTimeInPlayerBar(currentTime);
+            updateSeekPercentage($seekBar, seekBarFillRatio);            
+            });            
     }
+};
+
+var filterTimeCode = function(timeInSeconds) {
+    var songTime = parseFloat(timeInSeconds);
+    var minutes = Math.floor(songTime/60);
+    var seconds = Math.floor(songTime - (minutes * 60));
+    while (seconds < 10) {
+        return minutes + ":0" + seconds;
+    }
+    return minutes + ":" + seconds;
+}
+
+var setCurrentTimeInPlayerBar = function(currentTime) {
+    $('.currently-playing .seek-control .current-time').text(filterTimeCode(currentTime));
 };
 
 var updateSeekPercentage = function($seekBar, seekBarFillRatio) {
@@ -222,6 +239,7 @@ var updatePlayerBar = function() {
     $('.currently-playing .artist-song-mobile').text(currentSongFromAlbum.title + " - " + currentAlbum.artist);
     $('.currently-playing .artist-name').text(currentAlbum.artist);
     $('.main-controls .play-pause').html(playerBarPauseButton);
+    $('.currently-playing .seek-control .total-time').text(filterTimeCode(currentSongFromAlbum.duration));
 }
 
 

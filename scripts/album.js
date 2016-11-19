@@ -96,6 +96,7 @@ var setCurrentAlbum = function(album) {
     }
 };
 
+
 var filterTimeCode = function(timeInSeconds) {
     var songTime = parseFloat(timeInSeconds);
     var minutes = Math.floor(songTime/60);
